@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Index - LibrarySystem</title>
+    <!-- Bootstrap para los estilos -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        html {
+            position: relative;
+            min-height: 100%;
+        }
+
+        body {
+            margin-bottom: 60px;
+            padding-top: 10px;
+        }
+
+        .footer {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            line-height: 60px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Menú Superior -->
+<header>
+    <nav class="navbar navbar-expand-sm navbar-light bg-white border-bottom box-shadow mb-4">
+        <div class="container">
+            <a class="navbar-brand" th:href="@{/libros}">LibrarySystem</a>
+            <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                <ul class="navbar-nav flex-grow-1">
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" th:href="@{/libros}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" th:href="@{/libros}">Privacy</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" th:href="@{/libros}">Gestión de Libros</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<!-- Contenedor Principal (Agregado para alinear el contenido) -->
+<div class="container">
+    <h1>Index</h1>
+
+    <!-- Equivalente a @ViewBag.MensajeBienvenida -->
+    <h4 class="text-secondary mb-4" th:text="${mensajeBienvenida}"></h4>
+
+    <!-- Buscador -->
+    <form th:action="@{/libros}" method="get" class="mb-3">
+        <div class="row">
+            <div class="col-md-6 d-flex">
+                <input type="text" name="searchString" class="form-control me-2"
+                       placeholder="Buscar por título o autor..."/>
+                <button type="submit" class="btn btn-outline-primary">Buscar</button>
+                <a th:href="@{/libros}" class="btn btn-link">Limpiar</a>
+            </div>
+        </div>
+    </form>
+
+    <!-- Botones Create New y Exportar Reporte (.txt) -->
+    <p>
+        <a th:href="@{/libros/create}">Create New</a>
+        <a th:href="@{/libros/exportar}" class="btn btn-success btn-sm ms-3">Exportar Reporte (.txt)</a>
+    </p>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Titulo</th>
+            <th>Autor</th>
+            <th>AñoPublicacion</th>
+            <th></th> <!-- Encabezado vacío para las acciones -->
+        </tr>
+        </thead>
+        <tbody>
+        <!-- Equivalente a @foreach (var item in Model) -->
+        <tr th:each="libro : ${libros}">
+            <td th:text="${libro.titulo}"></td>
+            <td th:text="${libro.autor}"></td>
+            <td th:text="${libro.añoPublicacion}"></td>
+            <td>
+                <!-- Enlaces de acción (Edit | Details | Delete) -->
+                <a th:href="@{/libros/edit/{id}(id=${libro.id})}">Edit</a> |
+                <a th:href="@{/libros/details/{id}(id=${libro.id})}">Details</a> |
+                <a th:href="@{/libros/delete/{id}(id=${libro.id})}"
+                   onclick="return confirm('¿Estás seguro de eliminar este libro?');">Delete</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- Pie de Página -->
+<footer class="border-top footer text-muted mt-5">
+    <div class="container">
+        &copy; 2026 - LibrarySystem - <a th:href="@{/libros}">Privacy</a>
+    </div>
+</footer>
+
+</body>
+</html>
